@@ -35,9 +35,7 @@ public class Timer extends Thread {
 	    System.out.println(i + "Just some text");
             try {
 		sleep(timerDelay);
-                lines.changeSecondSizeLine(TXCENTER, TYCENTER, TXCENTER + i, TYCENTER - minuteLength);
-                //lines.changeMinuteSizeLine(TXCENTER, TYCENTER, TXCENTER + i, TYCENTER - minuteLength);
-                //lines.changeHourSizeLine(TXCENTER, TYCENTER, TXCENTER + hourLength, TYCENTER + i);
+                lines.printTime();
                 i++;
 	    } catch (InterruptedException | IllegalThreadStateException e) {
                 System.out.println("Error: " + e.getMessage());

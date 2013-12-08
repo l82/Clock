@@ -10,8 +10,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.geom.*;
-import static java.lang.Thread.sleep;
+import java.util.Calendar;
+import java.util.Date;
 
 /**
  *
@@ -24,7 +24,7 @@ public class ClockUI {
     private int        lengthSecond;
     private int        lengthMinute;
     private int        lengthHour;
-    private int        XCENTER;
+    private int        XCENTRE;
     private int        YCENTRE;
     private Boolean    started;
     private JButton    button;
@@ -36,14 +36,13 @@ public class ClockUI {
      */
     public ClockUI() {
         logic = new ClockLogic();
-        lines = new Line();
-        button = new JButton();
-        myFrame = new JFrame(); 
-        XCENTER = 300;
+        XCENTRE = 300;
         YCENTRE = 300;
         lengthHour = 150;
         lengthMinute = 170;
         lengthSecond = 180;
+        button = new JButton();
+        myFrame = new JFrame(); 
         started = false;
         button.setText("Start");
     }
@@ -60,9 +59,9 @@ public class ClockUI {
         JPanel myPanel = new JPanel();
         myFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         myFrame.setSize (600, 600);
-        lines.changeSecondSizeLine(XCENTER, YCENTRE, XCENTER, YCENTRE - lengthSecond);
-        lines.changeMinuteSizeLine(XCENTER, YCENTRE, XCENTER, YCENTRE - lengthMinute);
-        lines.changeHourSizeLine(XCENTER, YCENTRE, XCENTER, YCENTRE - lengthSecond);
+        lines = new Line(XCENTRE, YCENTRE, lengthHour, lengthMinute, lengthSecond);
+        
+        lines.printTime();
         myFrame.add(lines);
         myPanel.add(button);
         button.setPreferredSize(new Dimension(150, 20));
@@ -71,7 +70,7 @@ public class ClockUI {
             public void actionPerformed(ActionEvent e)
             {
                 if (started == false) {
-                    timer = new Timer(1000, lines, XCENTER, YCENTRE, lengthHour, 
+                    timer = new Timer(1000, lines, XCENTRE, YCENTRE, lengthHour, 
                     lengthMinute, lengthSecond);
                     button.setText("Stop");
                     started = true;

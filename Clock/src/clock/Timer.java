@@ -7,32 +7,30 @@
 package clock;
 
 /**
- *
+ * The timer object. Draws the clock at certain intervals
  * @author lotta
  */
 public class Timer extends Thread {
     
     private final int timerDelay;
-    private Line lines;
-    private int TXCENTER, TYCENTER, minuteLength, hourLength, secondLength;
+    private final Line lines;
     
-    public Timer(int delay, Line inLines, int XCENTER, int YCENTER, 
-            int hourArrow, int minuteArrow, int secondArrow) {
+    /**
+     * Sleeps and draws the clock at certain times
+     * @param delay How long to sleep between the drawings.
+     * @param inLines The graphical Line object to draw
+     */
+    public Timer(int delay, Line inLines) {
 	super();
         timerDelay = delay;
         lines = inLines;
-        TXCENTER = XCENTER;
-        TYCENTER = YCENTER;
-        secondLength = secondArrow;
-        minuteLength = minuteArrow;
-        hourLength = hourArrow;
     }
     
     @Override
     public void run() {
         int i = 0;
 	while (true) {
-	    System.out.println(i + "Just some text");
+	    System.out.println("Elapsed time in s: " + (timerDelay * i / timerDelay) );
             try {
 		sleep(timerDelay);
                 lines.printTime();

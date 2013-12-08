@@ -8,26 +8,34 @@ package clock;
 import javax.swing.*;
 import java.awt.*;
 import java.util.Calendar;
-import java.math.*;
+
+
 /**
- *
+ * The Line class handles the drawing of the clock
  * @author lotta
  */
-   
     class Line extends JComponent {
  
-        private int xCentre;
-        private int yCentre;
+        private final int xCentre;
+        private final int yCentre;
         private int xMinuteEnd;
         private int yMinuteEnd;
         private int xHourEnd;
         private int yHourEnd;
         private int xSecondEnd;
         private int ySecondEnd;
-        private int lengthHour;
-        private int lengthMinute;
-        private int lengthSecond;
+        private final int lengthHour;
+        private final int lengthMinute;
+        private final int lengthSecond;
         
+        /**
+         * The constructor for the clock
+         * @param XCENTRE The X-position of the centre
+         * @param YCENTRE The Y-position of the centre
+         * @param lengthH The length of the hour pointer
+         * @param lengthM The length of the minute pointer
+         * @param lengthS The length of the second pointer
+         */
         public Line(int XCENTRE, int YCENTRE, int lengthH, int lengthM, 
                 int lengthS) {
             
@@ -56,6 +64,12 @@ import java.math.*;
        
        private enum LINE_TYPE {hour, minute, second}; 
     
+       /**
+        * Changes the end points of the pointers
+        * @param xPoint End x-point
+        * @param yPoint End y-point
+        * @param lineType Type of line, hour, minute or second
+        */
        public void changeSizeLine (int xPoint, int yPoint, LINE_TYPE lineType) {
            
            switch(lineType) {
@@ -74,6 +88,9 @@ import java.math.*;
            }         
        }
        
+       /**
+        * Prints the current time
+        */
        public void printTime () {
             Calendar timeNow = Calendar.getInstance();
             // You cannot use Date class to extract individual Date fields
@@ -85,20 +102,23 @@ import java.math.*;
             calculateCoordinates(hour, minute, second);
        }
        
-       public int calculateQuadrant(double angle) {
+       private int calculateQuadrant(double angle) {
            int quadrant;
            
-           if (angle < 90) {
+           if ((int)angle < 90) {
                quadrant = 1;
            }
-           else if (angle >= 90 && angle < 180) {
+           else if ((int)angle >= 90 && (int)angle < 180) {
                quadrant = 2;
            }
-           else if (angle >= 180 && angle < 270) {
+           else if ((int)angle >= 180 && (int)angle < 270) {
                quadrant = 3;
            }
-           else if (angle >= 270 && angle <= 360) {
+           else if ((int)angle >= 270 && (int)angle < 360) {
                quadrant = 4;
+           }
+           else if ((int)angle == 360) {
+               quadrant = 1;
            }
            else {
                System.out.println("ERROR: Invalid quadrant");
@@ -109,41 +129,41 @@ import java.math.*;
        
        private void setXYLine(double angle, int length, LINE_TYPE lineType) {
            
-           double radianHours;
+           double radian;
            double angelQuadrant;
            
            int quadrant;
-           double xHour;
-           double yHour;
+           double xP;
+           double yP;
            
            quadrant = calculateQuadrant(angle);
            switch (quadrant) {
                case 1:
-                   radianHours = Math.toRadians(angle);
-                   xHour = length * Math.sin(radianHours);
-                   yHour = length * Math.cos(radianHours);
-                   changeSizeLine((xCentre + (int)(xHour)), (yCentre + (int)(yHour)), lineType);
+                   radian = Math.toRadians(angle);
+                   xP = length * Math.sin(radian);
+                   yP = length * Math.cos(radian);
+                   changeSizeLine((xCentre + (int)(xP)), (yCentre - (int)(yP)), lineType);
                    break;
                case 2:
                    angelQuadrant = angle - 90;
-                   radianHours = Math.toRadians(angelQuadrant);
-                   yHour = length * Math.sin(radianHours);
-                   xHour = length * Math.cos(radianHours);
-                   changeSizeLine((xCentre + (int)(xHour)), (yCentre - (int)(yHour)), lineType);
+                   radian = Math.toRadians(angelQuadrant);
+                   yP = length * Math.sin(radian);
+                   xP = length * Math.cos(radian);
+                   changeSizeLine((xCentre + (int)(xP)), (yCentre + (int)(yP)), lineType);
                    break;
                case 3:
                    angelQuadrant = angle - 180;
-                   radianHours = Math.toRadians(angelQuadrant);
-                   xHour = length * Math.sin(radianHours);
-                   yHour = length * Math.cos(radianHours);
-                   changeSizeLine((xCentre + (int)(xHour)), (yCentre + (int)(yHour)), lineType);
+                   radian = Math.toRadians(angelQuadrant);
+                   xP = length * Math.sin(radian);
+                   yP = length * Math.cos(radian);
+                   changeSizeLine((xCentre - (int)(xP)), (yCentre + (int)(yP)), lineType);
                    break;
                case 4:
                    angelQuadrant = angle - 270;
-                   radianHours = Math.toRadians(angelQuadrant);
-                   yHour = length * Math.sin(radianHours);
-                   xHour = length * Math.cos(radianHours);
-                   changeSizeLine((xCentre - (int)(xHour)), (yCentre - (int)(yHour)), lineType);
+                   radian = Math.toRadians(angelQuadrant);
+                   yP = length * Math.sin(radian);
+                   xP = length * Math.cos(radian);
+                   changeSizeLine((xCentre - (int)(xP)), (yCentre - (int)(yP)), lineType);
                    break;
            }
        }    
